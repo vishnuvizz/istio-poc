@@ -1,0 +1,31 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: istio-artifactory-01-vs
+  namespace: artifactory-01
+spec:
+  hosts:
+  - "artifactory-01.dev-boschdevcloud.com"
+  gateways:
+  - istio-artifactory-01-internal-gateway
+  http:
+#  - fault:
+#      abort:
+#        httpStatus: 500
+#        percentage:
+#          value: 50
+#    match:
+#    - headers:
+#        fault-injection-test:
+#          exact: true
+#    route:
+#    - destination:
+#        host: ratings
+#        subset: v1
+  - route:
+    - destination:
+        host: artifactory-pro.artifactory-01.svc.cluster.local
+        port:
+          number: 8081
+        subset: v1
+#  - timeout: 5s

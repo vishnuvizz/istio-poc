@@ -1,0 +1,20 @@
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: istio-01-dr
+  namespace: test-app-ns
+spec:
+  host: test-app-svc.test-app-ns.svc.cluster.local
+  trafficPolicy:
+    tls:
+      mode: DISABLE
+#      mode: ISTIO_MUTUAL //does not work yet - upstream connect error or disconnect/reset before headers. retried and the latest reset reason: remote connection failure, transport failure reason: TLS error: 268435581:SSL routines:OPENSSL_internal:CERTIFICATE_VERIFY_FAILED
+  subsets:
+   - name: v1
+     labels:
+       app: test-app
+       name: nginx
+   - name: v2
+     labels:
+       app: test-app
+       name: httpd

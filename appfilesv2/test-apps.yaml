@@ -1,0 +1,81 @@
+---
+#NS
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: test-app-ns
+  labels:
+   istio.io/rev: asm-1-19
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: test-app
+    name: nginx
+    tags.datadoghq.com/env: "dev"
+    tags.datadoghq.com/service: "simple-web-app"
+  name: test-app-nginx
+  namespace: test-app-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-app
+      name: nginx
+  template:
+    metadata:
+      labels:
+        app: test-app
+        name: nginx
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        ports:
+        - containerPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: test-app
+    name: httpd
+    tags.datadoghq.com/env: "dev"
+    tags.datadoghq.com/service: "simple-web-app"
+  name: test-app-httpd
+  namespace: test-app-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-app
+      name: httpd
+  template:
+    metadata:
+      labels:
+        app: test-app
+        name: httpd
+    spec:
+      containers:
+      - image: httpd
+        name: httpd
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: test-app
+  name: test-app-svc
+  namespace: test-app-ns
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: test-app
+status:
+  loadBalancer: {}

@@ -1,0 +1,18 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: istio-artifactory-01-internal-gateway
+  namespace: artifactory-01
+spec:
+  selector:
+    istio: aks-istio-ingressgateway-internal
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+#    tls:
+#      mode: SIMPLE
+#      credentialName: traefik-default-cert
+    hosts:
+    - "artifactory-01.dev-boschdevcloud.com"

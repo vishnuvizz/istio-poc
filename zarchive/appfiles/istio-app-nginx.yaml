@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    app: test-app
+    name: nginx
+  name: test-app-nginx
+  namespace: test-app-ns
+spec:
+  containers:
+  - image: nginx
+    name: test-app
+    ports:
+    - containerPort: 80
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}

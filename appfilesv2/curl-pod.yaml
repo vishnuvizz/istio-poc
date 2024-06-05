@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: curl-pod
+        tags.datadoghq.com/env: "dev"
+    tags.datadoghq.com/service: "curl-pod"
+  name: curl-pod
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: curl-pod
+  template:
+    metadata:
+      labels:
+        app: curl-pod
+    spec:
+      containers:
+      - image: nginx
+        name: nginx

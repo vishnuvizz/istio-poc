@@ -1,0 +1,14 @@
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: istio-artifactory-01-dr
+spec:
+  host: artifactory-pro.artifactory-01.svc.cluster.local
+  trafficPolicy:
+    tls:
+      mode: DISABLE
+#      mode: ISTIO_MUTUAL //does not work yet - upstream connect error or disconnect/reset before headers. retried and the latest reset reason: remote connection failure, transport failure reason: TLS error: 268435581:SSL routines:OPENSSL_internal:CERTIFICATE_VERIFY_FAILED
+  subsets:
+   - name: v1
+     labels:
+       app: test-app # need to adjust it
